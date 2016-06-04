@@ -96,6 +96,7 @@ class Solver
                     )
                 ) {
                     ++$slotsOccupied;
+                    var_dump($date, (string) $shift, $employee->getName());
                     $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
                 } elseif ($numberOfTries > $this->getEmployeesCount()) {
                     // ++$slotsOccupied;
