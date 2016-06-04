@@ -24,6 +24,11 @@ class Calendar
     protected $daysInMonth;
 
     /**
+     * @var array
+     */
+    protected $employeesFreeDaysPerWeek = [];
+
+    /**
      * @param int $month
      * @param int $year
      */
@@ -44,6 +49,7 @@ class Calendar
     public function addEmployee(Employee $employee, $freeDaysPerWeek = 1)
     {
         array_push($this->employees, $employee);
+        $this->employeesFreeDaysPerWeek[$employee->getId()] = $freeDaysPerWeek;
     }
 
     /**
