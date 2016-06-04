@@ -38,4 +38,16 @@ class CalendarTest extends PHPUnit_Framework_TestCase
         $calendar->addEmployee(new Employee('Susan Bar'));
         $this->assertEquals(2, $calendar->getEmployeesCount());
     }
+
+    public function testGetFreeDaysForEmployee()
+    {
+        $calendar = new Calendar(6, 2016);
+        $employee = new Employee('John Foo');
+        $calendar->addEmployee($employee, 2);
+        $this->assertEquals(2, $calendar->getFreeDaysForEmployee($employee));
+
+        $employee = new Employee('Susan Bar');
+        $calendar->addEmployee($employee);
+        $this->assertEquals(1, $calendar->getFreeDaysForEmployee($employee));
+    }
 }

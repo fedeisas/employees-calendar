@@ -22,7 +22,7 @@ class Shift
      */
     public function __construct($weekday, $type)
     {
-        if (!in_array($type, [static::TYPE_DAYTIME, static::TYPE_NIGHTTIME])) {
+        if (!in_array($type, static::types())) {
             throw new \InvalidArgumentException('Wrong shift type: ' . $type);
         }
 
@@ -60,5 +60,16 @@ class Shift
         }
 
         return new static((int) date("w", strtotime($parts[0])), $parts[1]);
+    }
+
+    /**
+     * @return array
+     */
+    public static function types()
+    {
+        return [
+            static::TYPE_DAYTIME,
+            static::TYPE_NIGHTTIME,
+        ];
     }
 }

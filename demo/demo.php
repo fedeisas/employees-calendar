@@ -13,10 +13,7 @@ $year = !empty($options['y']) ? (int) $options['y'] : (int) date('Y');
 
 $calendar = new Calendar(
     $month,
-    $year,
-    [
-        'weeklyRest' => 1,
-    ]
+    $year
 );
 
 $calendar->addEmployee(
@@ -39,12 +36,12 @@ $calendar->addEmployee(
 );
 
 $calendar->addEmployee(
-    new Employee('Empleado 3'),
-    [
+    new Employee('Empleado 3', [
         Shift::createFromString('Monday nighttime'),
         Shift::createFromString('Tuesday daytime')
-    ]
+    ]),
+    2
 );
 
 $solver = new Solver($calendar);
-var_dump($solve->solve());
+// var_dump($solve->solve());
