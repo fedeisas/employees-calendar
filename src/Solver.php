@@ -86,17 +86,19 @@ class Solver
             while ($slotsOccupied < $shiftSize) {
                 $employee = $this->getNextEmployee();
 
-                var_dump([
-                    'date' => $date,
-                    'shift' => (string) $shift,
-                    'employee' => $employee->getName(),
-                    'canWork' => $employee->canWork($shift),
-                    'numberOfWorkingThisWeek' => $this->manager->getNumberOfWorkingThisWeek($date, $employee),
-                    'getFreeDaysForEmployee' => $this->getFreeDaysForEmployee($employee),
-                    'isInSpecialDay' => $this->calendar->isInSpecialDay($shift),
-                    'getNumberOfSpecialDaysThisWeek' => $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee),
-                    'specialDaysPerEmployee' => $specialDaysPerEmployee,
-                ]);
+                // var_dump([
+                //     'date' => $date,
+                //     'shift' => (string) $shift,
+                //     'employee' => $employee->getName(),
+                //     'canWork' => $employee->canWork($shift),
+                //     'numberOfWorkingThisWeek' => $this->manager->getNumberOfWorkingThisWeek($date, $employee),
+                //     'getFreeDaysForEmployee' => $this->getFreeDaysForEmployee($employee),
+                //     'isInSpecialDay' => $this->calendar->isInSpecialDay($shift),
+                //     'getNumberOfSpecialDaysThisWeek' => $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee),
+                //     'specialDaysPerEmployee' => $specialDaysPerEmployee,
+                // ]);
+
+                ++$numberOfTries;
 
                 if ($employee->canWork($shift) &&
                     $this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->getFreeDaysForEmployee($employee) <= 7 &&
@@ -104,12 +106,10 @@ class Solver
                         $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee) < $specialDaysPerEmployee
                     )
                 ) {
+                    ++$slotsOccupied;
                     $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
-                }
-
-                ++$numberOfTries;
-
-                if ($numberOfTries >= $this->getEmployeesCount()) {
+                } elseif ($numberOfTries > $this->getEmployeesCount()) {
+                    ++$slotsOccupied;
                     $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
                 }
             }
@@ -129,5 +129,13 @@ class Solver
 
         next($this->employees);
         return $employee;
+    }
+
+    /**
+     * @return Manager
+     */
+    public function getManager()
+    {
+        return $this->manager;
     }
 }

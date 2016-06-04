@@ -49,3 +49,11 @@ $solver->addEmployee(
 
 
 $solver->solve();
+
+foreach ($solver->getManager()->getCollection() as $date => $row) {
+    foreach ($row as $shift => $employees) {
+        foreach ($employees as $employee) {
+            echo join(' - ', [$date, $shift, $employee->getName()]) . PHP_EOL;
+        }
+    }
+}
