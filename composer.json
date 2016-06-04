@@ -1,0 +1,23 @@
+{
+  "name": "fedeisas/employeers_calendar",
+  "authors": [
+    {
+      "name": "Fede Isas",
+      "email": "fedeisas@hotmail.com"
+    }
+  ],
+  "require": {
+    "phpunit/phpunit": "^5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "EmployeesCalendar\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "EmployeesCalendar\\": "src/",
+      "EmployeesCalendar\\Test\\": "tests"
+    }
+  }
+}
