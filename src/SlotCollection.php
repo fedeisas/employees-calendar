@@ -8,6 +8,10 @@ class SlotCollection
      */
     protected $collection = [];
 
+    /**
+     * @param Slot[]|null $slots
+     * @param int $defaultSlotSize
+     */
     public function __construct(array $slots = null, $defaultSlotSize = 2)
     {
         foreach (range(0, 6) as $weekday) {
@@ -26,6 +30,12 @@ class SlotCollection
         }
     }
 
+    /**
+     * @param Slot[]|null $slots
+     * @param int $weekday
+     * @param string $type
+     * @return Slot|null
+     */
     protected function findSlot(array $slots = null, $weekday, $type)
     {
         foreach ($slots as $slot) {
@@ -35,11 +45,18 @@ class SlotCollection
         }
     }
 
+    /**
+     * @return Slot[]
+     */
     public function getSlots()
     {
         return $this->collection;
     }
 
+    /**
+     * @param Shift $shift
+     * @return int
+     */
     public function getSizeForShift(Shift $shift)
     {
         foreach ($this->collection as $slot) {

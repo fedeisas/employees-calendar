@@ -1,10 +1,11 @@
 <?php
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use EmployeesCalendar\Calendar;
 use EmployeesCalendar\Employee;
 use EmployeesCalendar\Shift;
+use EmployeesCalendar\Slot;
+use EmployeesCalendar\SlotCollection;
 use EmployeesCalendar\Solver;
 
 $options = getopt('m:y:');
@@ -13,7 +14,14 @@ $year = !empty($options['y']) ? (int) $options['y'] : (int) date('Y');
 
 $calendar = new Calendar(
     $month,
-    $year
+    $year,
+    new SlotCollection(
+        [
+            new Slot(Shift::createFromString('Friday nighttime'), 3),
+            new Slot(Shift::createFromString('Saturday nighttime'), 2)
+        ],
+        1
+    )
 );
 
 $calendar->addEmployee(

@@ -34,7 +34,6 @@ class SlotCollectionTest extends PHPUnit_Framework_TestCase
             new Slot(Shift::createFromString('Monday nighttime'), 1)
         ], 2);
         $this->assertCount(14, $collection->getSlots());
-
         $this->assertEquals(2, $collection->getSizeForShift(Shift::createFromString('Monday daytime')));
         $this->assertEquals(1, $collection->getSizeForShift(Shift::createFromString('Monday nighttime')));
     }

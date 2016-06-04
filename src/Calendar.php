@@ -103,4 +103,24 @@ class Calendar
     {
         return $this->year;
     }
+
+    public function getAllPossibleShifts()
+    {
+        $dates = [];
+        for ($i = 1; $i <= $this->daysInMonth; $i++) {
+            $dates[] = $this->year . "-" . $this->month . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
+        }
+
+        $shifts = [];
+        foreach ($dates as $date) {
+            foreach (Shift::types() as $type) {
+                array_push(
+                    $shifts,
+                    new Shift((int) date('w', strtotime($date)), $type)
+                );
+            }
+        }
+
+        return $shifts;
+    }
 }

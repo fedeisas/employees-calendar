@@ -50,4 +50,12 @@ class CalendarTest extends PHPUnit_Framework_TestCase
         $calendar->addEmployee($employee);
         $this->assertEquals(1, $calendar->getFreeDaysForEmployee($employee));
     }
+
+    public function testGetAllPossibleShifts()
+    {
+        $calendar = new Calendar(6, 2016);
+        $shifts = $calendar->getAllPossibleShifts();
+
+        $this->assertCount(60, $shifts);
+    }
 }
