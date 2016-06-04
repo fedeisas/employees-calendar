@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use EmployeesCalendar\Calendar;
 use EmployeesCalendar\Employee;
 use EmployeesCalendar\Shift;
+use EmployeesCalendar\Solver;
 
 $options = getopt('m:y:');
 $month = !empty($options['m']) ? (int) $options['m'] : (int) date('m');
@@ -44,3 +45,6 @@ $calendar->addEmployee(
         Shift::createFromString('Tuesday daytime')
     ]
 );
+
+$solver = new Solver($calendar);
+var_dump($solve->solve());
