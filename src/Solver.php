@@ -91,16 +91,15 @@ class Solver
 
                 if ($employee->canWork($shift) &&
                     $this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->getFreeDaysForEmployee($employee) <= 7 &&
-                    !$this->calendar->isInSpecialDay($shift) || (
+                    (!$this->calendar->isInSpecialDay($shift) || (
                         $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee) < $specialDaysPerEmployee
-                    )
+                    ))
                 ) {
                     ++$slotsOccupied;
-                    var_dump($date, (string) $shift, $employee->getName());
                     $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
                 } elseif ($numberOfTries > $this->getEmployeesCount()) {
-                    // ++$slotsOccupied;
-                    // $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
+                    ++$slotsOccupied;
+                    $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
                 }
             }
         }
