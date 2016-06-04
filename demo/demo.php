@@ -17,36 +17,33 @@ $calendar = new Calendar(
     $year,
     new SlotCollection(
         [
-            new Slot(Shift::createFromString('Friday nighttime'), 3),
+            new Slot(Shift::createFromString('Friday nighttime'), 2),
             new Slot(Shift::createFromString('Saturday nighttime'), 2)
         ],
         1
-    )
+    ),
+    [
+        (int) date('w', strtotime('saturday')),
+        (int) date('w', strtotime('sunday')),
+    ]
 );
 
 $solver = new Solver($calendar);
 
 $solver->addEmployee(
-    new Employee('Empleado 1', [
-        Shift::createFromString('Sunday daytime'),
-        Shift::createFromString('Saturday nighttime')
-    ])
+    new Employee('Empleado 1')
 );
 
 $solver->addEmployee(
-    new Employee('Empleado 2', [
-        Shift::createFromString('Wednesday daytime'),
-    ])
+    new Employee('Empleado 2')
 );
 
 $solver->addEmployee(
     new Employee('Empleado 3', [
-        Shift::createFromString('Monday nighttime'),
-        Shift::createFromString('Tuesday daytime')
-    ]),
-    2
+        Shift::createFromString('Tuesday daytime'),
+        Shift::createFromString('Tuesday nighttime'),
+    ])
 );
-
 
 $solver->solve();
 

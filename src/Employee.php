@@ -28,7 +28,7 @@ class Employee
             throw new \InvalidArgumentException('Employee should have name.');
         }
 
-        if ($this->typeCheckFails($constraints)) {
+        if (!$this->constraintsTypeCheck($constraints)) {
             throw new \InvalidArgumentException('Employee constraints should be an instance of Shift.');
         }
 
@@ -72,9 +72,9 @@ class Employee
      * @param array $constraints
      * @return bool
      */
-    protected function typeCheckFails(array $constraints = [])
+    protected function constraintsTypeCheck(array $constraints = [])
     {
-        return count($constraints) !== count(array_filter($constraints, function ($constraint) {
+        return count($constraints) === count(array_filter($constraints, function ($constraint) {
             return $constraint instanceof Shift;
         }));
     }

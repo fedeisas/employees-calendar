@@ -39,4 +39,14 @@ class EmployeeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($employee->canWork(Shift::createFromString('Monday daytime')));
         $this->assertFalse($employee->canWork(Shift::createFromString('Sunday daytime')));
     }
+
+    public function testGetId()
+    {
+        $employee1 = new Employee('Steve Jobs');
+        $employee2 = new Employee('Steve Jobs');
+
+        $this->assertTrue(is_string($employee1->getId()));
+        $this->assertTrue(is_string($employee2->getId()));
+        $this->assertNotEquals($employee1->getId(), $employee2->getId());
+    }
 }

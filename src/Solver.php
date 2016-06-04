@@ -39,6 +39,7 @@ class Solver
 
     /**
      * @param Employee $employee
+     * @param int $freeDaysPerWeek Free days per week. Default: 1
      */
     public function addEmployee(Employee $employee, $freeDaysPerWeek = 1)
     {
@@ -86,18 +87,6 @@ class Solver
             while ($slotsOccupied < $shiftSize) {
                 $employee = $this->getNextEmployee();
 
-                // var_dump([
-                //     'date' => $date,
-                //     'shift' => (string) $shift,
-                //     'employee' => $employee->getName(),
-                //     'canWork' => $employee->canWork($shift),
-                //     'numberOfWorkingThisWeek' => $this->manager->getNumberOfWorkingThisWeek($date, $employee),
-                //     'getFreeDaysForEmployee' => $this->getFreeDaysForEmployee($employee),
-                //     'isInSpecialDay' => $this->calendar->isInSpecialDay($shift),
-                //     'getNumberOfSpecialDaysThisWeek' => $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee),
-                //     'specialDaysPerEmployee' => $specialDaysPerEmployee,
-                // ]);
-
                 ++$numberOfTries;
 
                 if ($employee->canWork($shift) &&
@@ -109,8 +98,8 @@ class Solver
                     ++$slotsOccupied;
                     $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
                 } elseif ($numberOfTries > $this->getEmployeesCount()) {
-                    ++$slotsOccupied;
-                    $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
+                    // ++$slotsOccupied;
+                    // $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
                 }
             }
         }
