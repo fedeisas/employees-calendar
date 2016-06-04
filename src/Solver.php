@@ -14,9 +14,19 @@ class Solver
     protected $calendar;
 
     /**
+     * @var Manager
+     */
+    protected $manager;
+
+    /**
      * @var array
      */
     protected $employeesFreeDaysPerWeek = [];
+
+    /**
+     * @var array
+     */
+    protected $solution;
 
     /**
      * @param Calendar $calendar
@@ -24,6 +34,7 @@ class Solver
     public function __construct(Calendar $calendar)
     {
         $this->calendar = $calendar;
+        $this->manager = new ShiftManager();
     }
 
     /**
@@ -61,8 +72,62 @@ class Solver
      */
     public function solve()
     {
-        foreach ($this->calendar->getAllPossibleShifts() as $shift) {
-            # code...
+        $numberOfSpecialDays = $this->calendar->getNumberOfSpecialDaysThisMonth();
+        $specialDaysPerEmployee = ceil($numberOfSpecialDays / $this->getEmployeesCount());
+
+        // [$date, Shift $shift, $size]
+        foreach ($this->calendar->getAllPossibleShifts() as $shiftComponent) {
+            $date = $shiftComponent[0];
+            $shift = $shiftComponent[1];
+            $shiftSize = $shiftComponent[2];
+            $slotsOccupied = 0;
+            $numberOfTries = 0;
+
+            while ($slotsOccupied < $shiftSize) {
+                $employee = $this->getNextEmployee();
+
+                var_dump([
+                    'date' => $date,
+                    'shift' => (string) $shift,
+                    'employee' => $employee->getName(),
+                    'canWork' => $employee->canWork($shift),
+                    'numberOfWorkingThisWeek' => $this->manager->getNumberOfWorkingThisWeek($date, $employee),
+                    'getFreeDaysForEmployee' => $this->getFreeDaysForEmployee($employee),
+                    'isInSpecialDay' => $this->calendar->isInSpecialDay($shift),
+                    'getNumberOfSpecialDaysThisWeek' => $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee),
+                    'specialDaysPerEmployee' => $specialDaysPerEmployee,
+                ]);
+
+                if ($employee->canWork($shift) &&
+                    $this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->getFreeDaysForEmployee($employee) <= 7 &&
+                    !$this->calendar->isInSpecialDay($shift) || (
+                        $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee) < $specialDaysPerEmployee
+                    )
+                ) {
+                    $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
+                }
+
+                ++$numberOfTries;
+
+                if ($numberOfTries >= $this->getEmployeesCount()) {
+                    $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
+                }
+            }
         }
+    }
+
+    /**
+     * @return Employee
+     */
+    public function getNextEmployee()
+    {
+        $employee = current($this->employees);
+        if (empty($employee)) {
+            reset($this->employees);
+            $employee = current($this->employees);
+        }
+
+        next($this->employees);
+        return $employee;
     }
 }

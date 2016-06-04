@@ -72,4 +72,12 @@ class Shift
             static::TYPE_NIGHTTIME,
         ];
     }
+
+    /**
+     * @return int
+     */
+    public function getWeekday()
+    {
+        return $this->weekday;
+    }
 }

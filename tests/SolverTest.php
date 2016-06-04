@@ -31,4 +31,19 @@ class SolverTest extends PHPUnit_Framework_TestCase
         $solver->addEmployee($employee);
         $this->assertEquals(1, $solver->getFreeDaysForEmployee($employee));
     }
+
+    public function testGetNextEmployee()
+    {
+        $calendar = new Calendar(6, 2016);
+        $solver = new Solver($calendar);
+        $employee = new Employee('John Foo');
+        $solver->addEmployee($employee, 2);
+        $employee = new Employee('Susan Bar');
+        $solver->addEmployee($employee);
+
+        $this->assertEquals('John Foo', $solver->getNextEmployee()->getName());
+        $this->assertEquals('Susan Bar', $solver->getNextEmployee()->getName());
+        $this->assertEquals('John Foo', $solver->getNextEmployee()->getName());
+        $this->assertEquals('Susan Bar', $solver->getNextEmployee()->getName());
+    }
 }
