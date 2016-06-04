@@ -24,26 +24,22 @@ $calendar = new Calendar(
     )
 );
 
-$calendar->addEmployee(
+$solver = new Solver($calendar);
+
+$solver->addEmployee(
     new Employee('Empleado 1', [
         Shift::createFromString('Sunday daytime'),
         Shift::createFromString('Saturday nighttime')
     ])
 );
 
-$calendar->addEmployee(
+$solver->addEmployee(
     new Employee('Empleado 2', [
         Shift::createFromString('Wednesday daytime'),
     ])
 );
 
-$calendar->addEmployee(
-    new Employee('Empleado 2', [
-        Shift::createFromString('Wednesday daytime'),
-    ])
-);
-
-$calendar->addEmployee(
+$solver->addEmployee(
     new Employee('Empleado 3', [
         Shift::createFromString('Monday nighttime'),
         Shift::createFromString('Tuesday daytime')
@@ -51,5 +47,5 @@ $calendar->addEmployee(
     2
 );
 
-$solver = new Solver($calendar);
+
 // var_dump($solve->solve());
