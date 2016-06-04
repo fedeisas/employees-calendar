@@ -14,11 +14,6 @@ class Calendar
     protected $year;
 
     /**
-     * @var Employee[]
-     */
-    protected $employees = [];
-
-    /**
      * @var SlotCollection
      */
     protected $slotCollection;
@@ -27,11 +22,6 @@ class Calendar
      * @var int
      */
     protected $daysInMonth;
-
-    /**
-     * @var array
-     */
-    protected $employeesFreeDaysPerWeek = [];
 
     /**
      * @param int $month
@@ -52,31 +42,6 @@ class Calendar
         $this->daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
     }
 
-    /**
-     * @param Employee $employee
-     */
-    public function addEmployee(Employee $employee, $freeDaysPerWeek = 1)
-    {
-        array_push($this->employees, $employee);
-        $this->employeesFreeDaysPerWeek[$employee->getId()] = $freeDaysPerWeek;
-    }
-
-    /**
-     * @return Employee[]
-     */
-    public function getEmployees()
-    {
-        return $this->employees;
-    }
-
-    /**
-     * @return int
-     */
-    public function getEmployeesCount()
-    {
-        return count($this->employees);
-    }
-
     public function getPrettyDateName()
     {
         $date = \DateTime::createFromFormat('!m', $this->month);
@@ -87,11 +52,6 @@ class Calendar
     public function getDaysInMonth()
     {
         return $this->daysInMonth;
-    }
-
-    public function getFreeDaysForEmployee(Employee $employee)
-    {
-        return $this->employeesFreeDaysPerWeek[$employee->getId()];
     }
 
     public function getMonth()
