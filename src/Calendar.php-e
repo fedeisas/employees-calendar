@@ -77,7 +77,7 @@ class Calendar
         return $this->year;
     }
 
-    public function getAllWorkableShifts()
+    public function getAllPossibleShifts()
     {
         $dates = [];
         for ($i = 1; $i <= $this->daysInMonth; $i++) {
@@ -91,11 +91,11 @@ class Calendar
 
                 array_push(
                     $shifts,
-                    new WorkableShift(
+                    [
                         $date,
                         $shift,
                         $this->getShiftSize($shift)
-                    )
+                    ]
                 );
             }
         }

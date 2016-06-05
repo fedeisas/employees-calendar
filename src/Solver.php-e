@@ -77,10 +77,10 @@ class Solver
         $specialDaysPerEmployee = ceil($numberOfSpecialDays / $this->getEmployeesCount());
 
         // [$date, Shift $shift, $size]
-        foreach ($this->calendar->getAllWorkableShifts() as $shiftComponent) {
-            $date = $workableShift->getDate();
-            $shift = $workableShift->getShift();
-            $shiftSize = $workableShift->getSize();
+        foreach ($this->calendar->getAllPossibleShifts() as $shiftComponent) {
+            $date = $shiftComponent[0];
+            $shift = $shiftComponent[1];
+            $shiftSize = $shiftComponent[2];
             $slotsOccupied = 0;
             $numberOfTries = 0;
 

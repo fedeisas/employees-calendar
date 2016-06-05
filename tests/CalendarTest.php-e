@@ -7,7 +7,6 @@ use EmployeesCalendar\Employee;
 use EmployeesCalendar\Shift;
 use EmployeesCalendar\Slot;
 use EmployeesCalendar\SlotCollection;
-use EmployeesCalendar\WorkableShift;
 
 class CalendarTest extends PHPUnit_Framework_TestCase
 {
@@ -37,7 +36,7 @@ class CalendarTest extends PHPUnit_Framework_TestCase
     public function testGetAllPossibleShifts()
     {
         $calendar = new Calendar(6, 2016);
-        $shifts = $calendar->getAllWorkableShifts();
+        $shifts = $calendar->getAllPossibleShifts();
 
         $this->assertCount(60, $shifts);
     }
@@ -55,18 +54,17 @@ class CalendarTest extends PHPUnit_Framework_TestCase
                 1
             )
         );
-        $shifts = $calendar->getAllWorkableShifts();
+        $shifts = $calendar->getAllPossibleShifts();
 
         $this->assertCount(60, $shifts);
 
-        foreach ($shifts as $workableShift) {
-            $this->assertInstanceOf(WorkableShift::class, $workableShift);
-            if ((string) $workableShift->getShift() === 'Friday nighttime') {
-                $this->assertEquals($workableShift->getSize(), 3);
-            } elseif ((string) $workableShift->getShift() === 'Saturday nighttime') {
-                $this->assertEquals($workableShift->getSize(), 2);
+        foreach ($shifts as $shift) {
+            if ((string) $shift[1] === 'Friday nighttime') {
+                $this->assertEquals($shift[2], 3);
+            } elseif ((string) $shift[1] === 'Saturday nighttime') {
+                $this->assertEquals($shift[2], 2);
             } else {
-                $this->assertEquals($workableShift->getSize(), 1);
+                $this->assertEquals($shift[2], 1);
             }
         }
     }
