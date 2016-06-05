@@ -46,12 +46,7 @@ class Shift
      */
     public function isEqualTo(Shift $shift)
     {
-        return (bool) ((string) $shift === (string) $this);
-    }
-
-    public function __toString()
-    {
-        return $this->name;
+        return (bool) ($shift->getName() === $this->getName());
     }
 
     /**
@@ -87,5 +82,13 @@ class Shift
     public function getWeekday()
     {
         return $this->weekday;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

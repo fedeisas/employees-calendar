@@ -64,14 +64,14 @@ class SlotsCollection
      */
     public function getSizeForShift(Shift $shift)
     {
-        if (isset($this->slotSizeCache[(string) $shift])) {
-            return $this->slotSizeCache[(string) $shift];
+        if (isset($this->slotSizeCache[$shift->getName()])) {
+            return $this->slotSizeCache[$shift->getName()];
         }
 
         foreach ($this->collection as $slot) {
             if ($slot->getShift()->isEqualTo($shift)) {
-                $this->slotSizeCache[(string) $shift] = $slot->getSize();
-                return $this->slotSizeCache[(string) $shift];
+                $this->slotSizeCache[$shift->getName()] = $slot->getSize();
+                return $this->slotSizeCache[$shift->getName()];
             }
         }
     }

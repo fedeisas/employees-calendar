@@ -28,7 +28,7 @@ class ShiftTest extends PHPUnit_Framework_TestCase
     {
         $shift = Shift::createFromString('Sunday nighttime');
         $this->assertInstanceOf(Shift::class, $shift);
-        $this->assertEquals('Sunday nighttime', (string) $shift);
+        $this->assertEquals('Sunday nighttime', $shift->getName());
     }
 
     /**
@@ -46,5 +46,11 @@ class ShiftTest extends PHPUnit_Framework_TestCase
         $shift2 = Shift::createFromString('Sunday nighttime');
         $this->assertTrue($shift1->isEqualTo($shift2));
         $this->assertTrue($shift2->isEqualTo($shift1));
+    }
+
+    public function testTypes()
+    {
+        $this->assertTrue(is_array(Shift::types()));
+        $this->assertEquals(['daytime', 'nighttime'], Shift::types());
     }
 }

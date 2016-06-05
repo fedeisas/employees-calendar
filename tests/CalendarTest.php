@@ -54,9 +54,9 @@ class CalendarTest extends PHPUnit_Framework_TestCase
 
         foreach ($shifts as $workableShift) {
             $this->assertInstanceOf(WorkableShift::class, $workableShift);
-            if ((string) $workableShift->getShift() === 'Friday nighttime') {
+            if ($workableShift->getShift()->getName() === 'Friday nighttime') {
                 $this->assertEquals($workableShift->getSize(), 3);
-            } elseif ((string) $workableShift->getShift() === 'Saturday nighttime') {
+            } elseif ($workableShift->getShift()->getName() === 'Saturday nighttime') {
                 $this->assertEquals($workableShift->getSize(), 2);
             } else {
                 $this->assertEquals($workableShift->getSize(), 1);

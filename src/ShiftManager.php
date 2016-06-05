@@ -33,7 +33,7 @@ class ShiftManager
             throw new \RuntimeException('Can\'t add an employee twice for the same shift.');
         }
 
-        $this->collection[$date][(string) $shift][] = $employee;
+        $this->collection[$date][$shift->getName()][] = $employee;
         $week = date('W', strtotime($date));
 
         $this->incrementCounter($this->workingDays, $employee, $week);
@@ -120,8 +120,8 @@ class ShiftManager
      */
     public function exists($date, Shift $shift, Employee $employee)
     {
-        if (!empty($this->collection[$date][(string) $shift])) {
-            foreach ($this->collection[$date][(string) $shift] as $presentEmployee) {
+        if (!empty($this->collection[$date][$shift->getName()])) {
+            foreach ($this->collection[$date][$shift->getName()] as $presentEmployee) {
                 if ($presentEmployee->getId() === $employee->getId()) {
                     return true;
                 }
