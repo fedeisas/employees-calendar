@@ -7,14 +7,19 @@ class Shift
     const TYPE_NIGHTTIME = 'nighttime';
 
     /**
-     * @var int
+     * @var string
      */
-    protected $weekday;
+    protected $type;
 
     /**
      * @var string
      */
-    protected $type;
+    protected $name;
+
+    /**
+     * @var int
+     */
+    protected $weekday;
 
     /**
      * @param int $weekday
@@ -32,6 +37,7 @@ class Shift
 
         $this->weekday = $weekday;
         $this->type = $type;
+        $this->name = join(' ', [jddayofweek($weekday - 1, 1), $type]);
     }
 
     /**
@@ -45,7 +51,7 @@ class Shift
 
     public function __toString()
     {
-        return join(' ', [jddayofweek($this->weekday - 1, 1), $this->type]);
+        return $this->name;
     }
 
     /**
@@ -56,7 +62,9 @@ class Shift
     {
         $parts = explode(' ', $string);
         if (count($parts) !== 2) {
-            throw new \InvalidArgumentException('Can\'t create Shift from string: ' . $string);
+            throw new \InvalidArgumentException(
+                sprintf('Can\'t create Shift from string: %s. Valid format is {weekday} {type}', $string)
+            );
         }
 
         return new static((int) date("w", strtotime($parts[0])), $parts[1]);

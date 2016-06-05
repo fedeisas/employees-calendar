@@ -9,6 +9,11 @@ class SlotsCollection
     protected $collection = [];
 
     /**
+     * @var array
+     */
+    protected $slotSizeCache = [];
+
+    /**
      * @param Slot[]|null $slots
      * @param int $defaultSlotSize
      */
@@ -59,9 +64,14 @@ class SlotsCollection
      */
     public function getSizeForShift(Shift $shift)
     {
+        if (isset($this->slotSizeCache[(string) $shift])) {
+            return $this->slotSizeCache[(string) $shift];
+        }
+
         foreach ($this->collection as $slot) {
             if ($slot->getShift()->isEqualTo($shift)) {
-                return $slot->getSize();
+                $this->slotSizeCache[(string) $shift] = $slot->getSize();
+                return $this->slotSizeCache[(string) $shift];
             }
         }
     }

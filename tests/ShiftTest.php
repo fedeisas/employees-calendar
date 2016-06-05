@@ -8,11 +8,20 @@ class ShiftTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Can't create Shift from string: foo
+     * @expectedExceptionMessage Can't create Shift from string: foo. Valid format is {weekday} {type}
      */
     public function testCreateFromBadString()
     {
         Shift::createFromString('foo');
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Can't create Shift from string: foo bar zas. Valid format is {weekday} {type}
+     */
+    public function testCreateFromBadStringFormat()
+    {
+        Shift::createFromString('foo bar zas');
     }
 
     public function testCreateFromString()
