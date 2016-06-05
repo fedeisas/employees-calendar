@@ -6,7 +6,7 @@ use EmployeesCalendar\Calendar;
 use EmployeesCalendar\Employee;
 use EmployeesCalendar\Shift;
 use EmployeesCalendar\Slot;
-use EmployeesCalendar\SlotCollection;
+use EmployeesCalendar\SlotsCollection;
 use EmployeesCalendar\ShiftManager;
 
 class ShiftManagerTest extends PHPUnit_Framework_TestCase

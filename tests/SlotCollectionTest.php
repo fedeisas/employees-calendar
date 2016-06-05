@@ -4,23 +4,23 @@ namespace EmployeesCalendar\Test;
 use PHPUnit_Framework_TestCase;
 use EmployeesCalendar\Shift;
 use EmployeesCalendar\Slot;
-use EmployeesCalendar\SlotCollection;
+use EmployeesCalendar\SlotsCollection;
 
-class SlotCollectionTest extends PHPUnit_Framework_TestCase
+class SlotsCollectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreate()
     {
-        new SlotCollection();
+        new SlotsCollection();
     }
 
     public function testCreateWithParameters()
     {
-        new SlotCollection(null, 2);
+        new SlotsCollection(null, 2);
     }
 
     public function testGetSlots()
     {
-        $collection = new SlotCollection(null, 2);
+        $collection = new SlotsCollection(null, 2);
         $this->assertCount(14, $collection->getSlots());
 
         foreach ($collection->getSlots() as $slot) {
@@ -30,7 +30,7 @@ class SlotCollectionTest extends PHPUnit_Framework_TestCase
 
     public function testCreateWithSomeExceptions()
     {
-        $collection = new SlotCollection([
+        $collection = new SlotsCollection([
             new Slot(Shift::createFromString('Monday nighttime'), 1)
         ], 2);
         $this->assertCount(14, $collection->getSlots());

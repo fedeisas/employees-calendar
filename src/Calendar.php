@@ -14,7 +14,7 @@ class Calendar
     protected $year;
 
     /**
-     * @var SlotCollection
+     * @var SlotsCollection
      */
     protected $slotCollection;
 
@@ -42,14 +42,14 @@ class Calendar
      * @param int $month
      * @param int $year
      */
-    public function __construct($month = null, $year = null, SlotCollection $slotCollection = null, array $specialDays = [])
+    public function __construct($month = null, $year = null, SlotsCollection $slotCollection = null, array $specialDays = [])
     {
         $month = !empty($month) ? (int) $month : (int) date('m');
         $year = !empty($year) ? (int) $year : (int) date('Y');
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
         if (empty($slotCollection)) {
-            $slotCollection = new SlotCollection(null, 1);
+            $slotCollection = new SlotsCollection(null, 1);
         }
 
         if (empty($specialDays)) {

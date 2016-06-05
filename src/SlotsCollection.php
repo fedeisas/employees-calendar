@@ -1,7 +1,7 @@
 <?php
 namespace EmployeesCalendar;
 
-class SlotCollection
+class SlotsCollection
 {
     /**
      * @var Slot[]

@@ -6,7 +6,7 @@ use EmployeesCalendar\Calendar;
 use EmployeesCalendar\Employee;
 use EmployeesCalendar\Shift;
 use EmployeesCalendar\Slot;
-use EmployeesCalendar\SlotCollection;
+use EmployeesCalendar\SlotsCollection;
 use EmployeesCalendar\WorkableShift;
 
 class CalendarTest extends PHPUnit_Framework_TestCase
@@ -47,7 +47,7 @@ class CalendarTest extends PHPUnit_Framework_TestCase
         $calendar = new Calendar(
             6,
             2016,
-            new SlotCollection(
+            new SlotsCollection(
                 [
                     new Slot(Shift::createFromString('Friday nighttime'), 3),
                     new Slot(Shift::createFromString('Saturday nighttime'), 2)
