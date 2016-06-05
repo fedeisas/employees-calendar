@@ -4,6 +4,21 @@ namespace EmployeesCalendar;
 class WorkableShift
 {
     /**
+     * @var string
+     */
+    protected $date;
+
+    /**
+     * @var Shift
+     */
+    protected $shift;
+
+    /**
+     * @var int
+     */
+    protected $size;
+
+    /**
      * @param int $weekday
      * @param string $type
      */
