@@ -3,7 +3,6 @@ namespace EmployeesCalendar\Test;
 
 use PHPUnit_Framework_TestCase;
 use EmployeesCalendar\Calendar;
-use EmployeesCalendar\Employee;
 use EmployeesCalendar\Shift;
 use EmployeesCalendar\Slot;
 use EmployeesCalendar\SlotsCollection;
@@ -44,7 +43,7 @@ class CalendarTest extends PHPUnit_Framework_TestCase
             new SlotsCollection(
                 [
                     new Slot(Shift::createFromString('Friday nighttime'), 3),
-                    new Slot(Shift::createFromString('Saturday nighttime'), 2)
+                    new Slot(Shift::createFromString('Saturday nighttime'), 2),
                 ],
                 1
             )
