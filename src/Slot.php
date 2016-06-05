@@ -13,6 +13,10 @@ class Slot
      */
     protected $size;
 
+    /**
+     * @param Shift $shift
+     * @param integer $size
+     */
     public function __construct(Shift $shift, $size = 1)
     {
         if (!is_numeric($size) || ($size !== 0 && empty($size))) {
