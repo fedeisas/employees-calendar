@@ -49,14 +49,11 @@ class Calendar
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
         if (empty($slotCollection)) {
-            $slotCollection = new SlotsCollection(null, 1);
+            $slotCollection = $this->getDefaultSlots();
         }
 
         if (empty($specialDays)) {
-            $specialDays = [
-                (int) date('w', strtotime('friday')),
-                (int) date('w', strtotime('saturday')),
-            ];
+            $specialDays = $this->getDefaultSpecialDays();
         }
 
         $this->month = $month;
@@ -145,5 +142,24 @@ class Calendar
     public function isInSpecialDay(Shift $shift)
     {
         return in_array($shift->getWeekday(), $this->specialDays);
+    }
+
+    /**
+     * @return SlotsCollection
+     */
+    protected function getDefaultSlots()
+    {
+        return new SlotsCollection(null, 1);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultSpecialDays()
+    {
+        return [
+            (int) date('w', strtotime('friday')),
+            (int) date('w', strtotime('saturday')),
+        ];
     }
 }
