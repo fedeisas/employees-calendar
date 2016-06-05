@@ -71,6 +71,7 @@ class SlotsCollection
         foreach ($this->collection as $slot) {
             if ($slot->getShift()->isEqualTo($shift)) {
                 $this->slotSizeCache[$shift->getName()] = $slot->getSize();
+
                 return $this->slotSizeCache[$shift->getName()];
             }
         }
