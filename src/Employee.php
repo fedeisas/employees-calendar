@@ -34,7 +34,7 @@ class Employee
 
         $this->name = $name;
         $this->constraints = $constraints;
-        $this->id = spl_object_hash($this); // Auto generate employee id, not performant but who cares
+        $this->id = $this->generateId();
     }
 
     /**
@@ -77,5 +77,13 @@ class Employee
         return count($constraints) === count(array_filter($constraints, function ($constraint) {
             return $constraint instanceof Shift;
         }));
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateId()
+    {
+        return uniqid();
     }
 }
