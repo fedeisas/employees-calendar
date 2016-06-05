@@ -6,7 +6,7 @@ use EmployeesCalendar\Shift;
 use EmployeesCalendar\Slot;
 use EmployeesCalendar\SlotsCollection;
 
-class SlotsCollectionTest extends PHPUnit_Framework_TestCase
+class SlotCollectionTest extends PHPUnit_Framework_TestCase
 {
     public function testCreate()
     {
@@ -31,7 +31,7 @@ class SlotsCollectionTest extends PHPUnit_Framework_TestCase
     public function testCreateWithSomeExceptions()
     {
         $collection = new SlotsCollection([
-            new Slot(Shift::createFromString('Monday nighttime'), 1)
+            new Slot(Shift::createFromString('Monday nighttime'), 1),
         ], 2);
         $this->assertCount(14, $collection->getSlots());
         $this->assertEquals(2, $collection->getSizeForShift(Shift::createFromString('Monday daytime')));

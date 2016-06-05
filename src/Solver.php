@@ -133,6 +133,7 @@ class Solver
         }
 
         next($this->employees);
+
         return $employee;
     }
 

@@ -8,7 +8,6 @@ use EmployeesCalendar\Solver;
 
 class SolverTest extends PHPUnit_Framework_TestCase
 {
-
     public function testAddEmployee()
     {
         $calendar = new Calendar(6, 2016);
