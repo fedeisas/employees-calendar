@@ -15,9 +15,9 @@ class EmployeesCollectionTest extends PHPUnit_Framework_TestCase
     public function testAddEmployee()
     {
         $collection = new EmployeesCollection($calendar);
-        $collection->addEmployee(new Employee('John Foo'));
+        $collection->add(new Employee('John Foo'));
         $this->assertEquals(1, $collection->count());
-        $collection->addEmployee(new Employee('Susan Bar'));
+        $collection->add(new Employee('Susan Bar'));
         $this->assertEquals(2, $collection->count());
     }
 
@@ -25,11 +25,11 @@ class EmployeesCollectionTest extends PHPUnit_Framework_TestCase
     {
         $collection = new EmployeesCollection($calendar);
         $employee = new Employee('John Foo');
-        $collection->addEmployee($employee, 2);
+        $collection->add($employee, 2);
         $this->assertEquals(2, $collection->getFreeDaysForEmployee($employee));
 
         $employee = new Employee('Susan Bar');
-        $collection->addEmployee($employee);
+        $collection->add($employee);
         $this->assertEquals(1, $collection->getFreeDaysForEmployee($employee));
     }
 
@@ -37,9 +37,9 @@ class EmployeesCollectionTest extends PHPUnit_Framework_TestCase
     {
         $collection = new EmployeesCollection($calendar);
         $employee = new Employee('John Foo');
-        $collection->addEmployee($employee, 2);
+        $collection->add($employee, 2);
         $employee = new Employee('Susan Bar');
-        $collection->addEmployee($employee);
+        $collection->add($employee);
 
         $this->assertEquals('John Foo', $collection->next()->getName());
         $this->assertEquals('Susan Bar', $collection->next()->getName());

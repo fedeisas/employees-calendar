@@ -25,6 +25,7 @@ class Solver
 
     /**
      * @param Calendar $calendar
+     * @param EmployeesCollection $employeesCollection
      */
     public function __construct(Calendar $calendar, EmployeesCollection $employeesCollection)
     {
@@ -48,7 +49,7 @@ class Solver
             $shiftSize = $workableShift->getSize();
             $slotsOccupied = 0;
             $numberOfTries = 0;
-            $isSpecialDay = $this->calendar->isInSpecialDay($shift);
+            $isInSpecialDay = $this->calendar->isInSpecialDay($shift);
 
             while ($slotsOccupied < $shiftSize) {
                 $employee = $this->employeesCollection->next();
@@ -68,11 +69,11 @@ class Solver
                     continue;
                 }
 
-                if ($this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->employeesCollection->getFreeDaysForEmployee($employee) >= 7) {
+                if ($this->hasReachedWeeklyWorkingDays($date, $employee)) {
                     continue;
                 }
 
-                if ($isInSpecialDay && $this->manager->employeesCollection->getNumberOfSpecialDaysThisWeek($date, $employee) > $specialDaysPerEmployee) {
+                if ($isInSpecialDay && $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee) > $specialDaysPerEmployee) {
                     continue;
                 }
 
@@ -87,10 +88,29 @@ class Solver
     }
 
     /**
-     * @return Manager
+     * @param string $date
+     * @param Employee $employee
+     * @return bool
      */
-    public function getManager()
+    protected function hasReachedWeeklyWorkingDays($date, Employee $employee)
     {
-        return $this->manager;
+        return $this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->employeesCollection->getFreeDaysForEmployee($employee) >= 7;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFormattedOutput()
+    {
+        $output = [];
+        foreach ($this->manager->getCollection() as $date => $row) {
+            foreach ($row as $shift => $employees) {
+                foreach ($employees as $employee) {
+                    $output[] = join(' - ', [$date, $shift, $employee->getName()]);
+                }
+            }
+        }
+
+        return $output;
     }
 }

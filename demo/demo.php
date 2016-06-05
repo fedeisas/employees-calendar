@@ -31,15 +31,15 @@ $calendar = new Calendar(
 
 $employeesCollection = new EmployeesCollection();
 
-$employeesCollection->addEmployee(
+$employeesCollection->add(
     new Employee('Empleado 1')
 );
 
-$employeesCollection->addEmployee(
+$employeesCollection->add(
     new Employee('Empleado 2')
 );
 
-$employeesCollection->addEmployee(
+$employeesCollection->add(
     new Employee('Empleado 3', [
         Shift::createFromString('Tuesday daytime'),
         Shift::createFromString('Tuesday nighttime'),
@@ -49,10 +49,6 @@ $employeesCollection->addEmployee(
 $solver = new Solver($calendar, $employeesCollection);
 $solver->solve();
 
-foreach ($solver->getManager()->getCollection() as $date => $row) {
-    foreach ($row as $shift => $employees) {
-        foreach ($employees as $employee) {
-            echo join(' - ', [$date, $shift, $employee->getName()]) . PHP_EOL;
-        }
-    }
+foreach ($solver->getFormattedOutput() as $row) {
+    echo $row . PHP_EOL;
 }

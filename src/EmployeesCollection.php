@@ -17,7 +17,7 @@ class EmployeesCollection
      * @param Employee $employee
      * @param int $freeDaysPerWeek Free days per week. Default: 1
      */
-    public function addEmployee(Employee $employee, $freeDaysPerWeek = 1)
+    public function add(Employee $employee, $freeDaysPerWeek = 1)
     {
         array_push($this->employees, $employee);
         $this->employeesFreeDaysPerWeek[$employee->getId()] = $freeDaysPerWeek;
