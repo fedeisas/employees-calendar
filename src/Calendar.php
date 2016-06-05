@@ -29,6 +29,16 @@ class Calendar
     protected $specialDays;
 
     /**
+     * @var array
+     */
+    protected $dates;
+
+    /**
+     * @var int
+     */
+    protected $numberOfSpecialDays = 0;
+
+    /**
      * @param int $month
      * @param int $year
      */
@@ -36,6 +46,7 @@ class Calendar
     {
         $month = !empty($month) ? (int) $month : (int) date('m');
         $year = !empty($year) ? (int) $year : (int) date('Y');
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
         if (empty($slotCollection)) {
             $slotCollection = new SlotCollection(null, 1);
@@ -52,7 +63,15 @@ class Calendar
         $this->year = $year;
         $this->slotCollection = $slotCollection;
         $this->specialDays = $specialDays;
-        $this->daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $this->daysInMonth = $daysInMonth;
+
+        for ($i = 1; $i <= $this->daysInMonth; $i++) {
+            $date = $this->year . "-" . $this->month . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
+            $this->dates[] = $date;
+            if (in_array((int) date('w', strtotime($date)), $specialDays)) {
+                ++$this->numberOfSpecialDays;
+            }
+        }
     }
 
     public function getPrettyDateName()
@@ -79,13 +98,8 @@ class Calendar
 
     public function getAllWorkableShifts()
     {
-        $dates = [];
-        for ($i = 1; $i <= $this->daysInMonth; $i++) {
-            $dates[] = $this->year . "-" . $this->month . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
-        }
-
         $shifts = [];
-        foreach ($dates as $date) {
+        foreach ($this->dates as $date) {
             foreach (Shift::types() as $type) {
                 $shift = new Shift((int) date('w', strtotime($date)), $type);
 
@@ -117,15 +131,7 @@ class Calendar
      */
     public function getNumberOfSpecialDaysThisMonth()
     {
-        $numberOfSpecialDays = 0;
-        $dates = [];
-        for ($i = 1; $i <= $this->daysInMonth; $i++) {
-            if (in_array((int) date('w', strtotime($this->year . "-" . $this->month . "-" . str_pad($i, 2, '0', STR_PAD_LEFT))), $this->specialDays)) {
-                ++$numberOfSpecialDays;
-            }
-        }
-
-        return $numberOfSpecialDays;
+        return $this->numberOfSpecialDays;
     }
 
     /**

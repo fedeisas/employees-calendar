@@ -21,6 +21,7 @@ class WorkableShift
     /**
      * @param int $weekday
      * @param string $type
+     * @param int $size
      */
     public function __construct($date, Shift $shift, $size)
     {
