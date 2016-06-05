@@ -28,12 +28,6 @@ class CalendarTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('June 2016', $calendar->getPrettyDateName());
     }
 
-    public function testCreateWithParametersAndGetDaysInMonth()
-    {
-        $calendar = new Calendar(6, 2016);
-        $this->assertEquals(30, $calendar->getDaysInMonth());
-    }
-
     public function testGetAllPossibleShifts()
     {
         $calendar = new Calendar(6, 2016);

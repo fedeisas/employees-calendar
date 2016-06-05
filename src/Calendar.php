@@ -74,23 +74,27 @@ class Calendar
         }
     }
 
+    /**
+     * @return string
+     */
     public function getPrettyDateName()
     {
-        $date = \DateTime::createFromFormat('!m', $this->month);
+        $date = \DateTime::createFromFormat('!m', $this->getMonth());
 
-        return join(' ', [$date->format('F'), $this->year]);
+        return join(' ', [$date->format('F'), $this->getYear()]);
     }
 
-    public function getDaysInMonth()
-    {
-        return $this->daysInMonth;
-    }
-
+    /**
+     * @return int
+     */
     public function getMonth()
     {
         return $this->month;
     }
 
+    /**
+     * @return int
+     */
     public function getYear()
     {
         return $this->year;
