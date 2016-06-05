@@ -41,7 +41,7 @@ class Solver
     {
         $employeesCount = $this->employeesCollection->count();
         $numberOfSpecialDays = $this->calendar->getNumberOfSpecialDaysThisMonth();
-        $specialDaysPerEmployee = ceil($numberOfSpecialDays / $employeesCount);
+        $maxSpecialDays = ceil($numberOfSpecialDays / $employeesCount);
 
         foreach ($this->calendar->getAllWorkableShifts() as $workableShift) {
             $date = $workableShift->getDate();
@@ -77,7 +77,7 @@ class Solver
                     continue;
                 }
 
-                if ($isInSpecialDay && $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee) > $specialDaysPerEmployee) {
+                if ($isInSpecialDay && $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee) > $maxSpecialDays) {
                     continue;
                 }
 
