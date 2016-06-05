@@ -119,15 +119,6 @@ class Calendar
     }
 
     /**
-     * @param Shift $shift
-     * @return int
-     */
-    protected function getShiftSize(Shift $shift)
-    {
-        return $this->slotCollection->getSizeForShift($shift);
-    }
-
-    /**
      * @return int
      */
     public function getNumberOfSpecialDaysThisMonth()
@@ -161,5 +152,14 @@ class Calendar
             (int) date('w', strtotime('friday')),
             (int) date('w', strtotime('saturday')),
         ];
+    }
+
+    /**
+     * @param Shift $shift
+     * @return int
+     */
+    protected function getShiftSize(Shift $shift)
+    {
+        return $this->slotCollection->getSizeForShift($shift);
     }
 }
