@@ -28,7 +28,7 @@ class Employee
             throw new \InvalidArgumentException('Employee should have name.');
         }
 
-        if (!$this->constraintsTypeCheck($constraints)) {
+        if (!empty($constraints) && !$this->constraintsTypeCheck($constraints)) {
             throw new \InvalidArgumentException('Employee constraints should be an instance of Shift.');
         }
 
@@ -74,9 +74,13 @@ class Employee
      */
     protected function constraintsTypeCheck(array $constraints = [])
     {
-        return count($constraints) === count(array_filter($constraints, function ($constraint) {
-            return $constraint instanceof Shift;
-        }));
+        $types = array_unique(array_map('get_class', $constraints));
+
+        if (count($types) === 1 && $types[0] === Shift::class) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
