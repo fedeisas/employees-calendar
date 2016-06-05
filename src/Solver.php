@@ -51,10 +51,14 @@ class Solver
             $numberOfTries = 0;
             $isInSpecialDay = $this->calendar->isInSpecialDay($shift);
 
-            while ($slotsOccupied < $shiftSize) {
+            while ($slotsOccupied < $shiftSize && $numberOfTries < ($employeesCount * 2)) {
                 $employee = $this->employeesCollection->next();
 
                 ++$numberOfTries;
+
+                if ($this->manager->exists($date, $shift, $employee)) {
+                    continue;
+                }
 
                 if ($numberOfTries > $employeesCount) {
                     ++$slotsOccupied;

@@ -74,4 +74,69 @@ class SolverTest extends PHPUnit_Framework_TestCase
             $this->assertNotContains('Sunday daytime', $row);
         }
     }
+
+    public function testCreateWithSeveralEmployeesDay()
+    {
+        $employees = new EmployeesCollection();
+        $employees->add(new Employee('John Doe'));
+        $employees->add(new Employee('Susan Bar'));
+        $calendar = new Calendar(
+            6,
+            2016,
+            new SlotsCollection(
+                [
+                    new Slot(Shift::createFromString('Saturday nighttime'), 2),
+                ],
+                1
+            ),
+            []
+        );
+        $solver = new Solver($calendar, $employees);
+        $solver->solve();
+
+        $solution = $solver->getFormattedOutput();
+
+        $count = 0;
+        foreach ($solution as $row) {
+            if (strpos($row, 'Saturday nighttime')) {
+                $count++;
+            }
+        }
+
+        $this->assertEquals(8, $count);
+    }
+
+    public function testCreateWithSeveralEmployeesDayWontRepeatEmployee()
+    {
+        $employees = new EmployeesCollection();
+        $employees->add(new Employee('John Doe'));
+        $employees->add(new Employee('Susan Bar'));
+        $calendar = new Calendar(
+            6,
+            2016,
+            new SlotsCollection(
+                [
+                    new Slot(Shift::createFromString('Saturday nighttime'), 3),
+                ],
+                1
+            ),
+            []
+        );
+        $solver = new Solver($calendar, $employees);
+        $solver->solve();
+
+        $solution = $solver->getFormattedOutput();
+
+        $count = 0;
+        $buffer = [];
+        foreach ($solution as $row) {
+            if (strpos($row, 'Saturday nighttime')) {
+                $buffer[] = $row;
+                $count++;
+            }
+        }
+
+        $this->assertEquals(8, $count);
+        $this->assertEquals(8, count(array_unique($buffer)));
+    }
 }

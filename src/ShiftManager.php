@@ -29,6 +29,10 @@ class ShiftManager
      */
     public function add($date, Shift $shift, Employee $employee)
     {
+        if ($this->exists($date, $shift, $employee)) {
+            throw new \RuntimeException('Can\'t add an employee twice for the same shift.');
+        }
+
         $this->collection[$date][(string) $shift][] = $employee;
         $week = date('W', strtotime($date));
 
@@ -42,6 +46,10 @@ class ShiftManager
      */
     public function addSpecialDay($date, Shift $shift, Employee $employee)
     {
+        if ($this->exists($date, $shift, $employee)) {
+            throw new \RuntimeException('Can\'t add an employee twice for the same shift.');
+        }
+
         $week = date('W', strtotime($date));
         $this->incrementCounter($this->specialDays, $employee, $week);
         $this->add($date, $shift, $employee);
@@ -102,5 +110,24 @@ class ShiftManager
     public function getCollection()
     {
         return $this->collection;
+    }
+
+    /**
+     * @param string $date
+     * @param Shift $shift
+     * @param Employee $employee
+     * @return bool
+     */
+    public function exists($date, Shift $shift, Employee $employee)
+    {
+        if (!empty($this->collection[$date][(string) $shift])) {
+            foreach ($this->collection[$date][(string) $shift] as $presentEmployee) {
+                if ($presentEmployee->getId() === $employee->getId()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
