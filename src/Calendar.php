@@ -62,13 +62,7 @@ class Calendar
         $this->specialDays = $specialDays;
         $this->daysInMonth = $daysInMonth;
 
-        for ($i = 1; $i <= $this->daysInMonth; $i++) {
-            $date = $this->year . "-" . $this->month . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
-            $this->dates[] = $date;
-            if (in_array((int) date('w', strtotime($date)), $specialDays)) {
-                ++$this->numberOfSpecialDays;
-            }
-        }
+        $this->computeDates();
     }
 
     /**
@@ -161,5 +155,16 @@ class Calendar
     protected function getShiftSize(Shift $shift)
     {
         return $this->slotCollection->getSizeForShift($shift);
+    }
+
+    protected function computeDates()
+    {
+        for ($i = 1; $i <= $this->daysInMonth; $i++) {
+            $date = $this->year . "-" . $this->month . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
+            $this->dates[] = $date;
+            if (in_array((int) date('w', strtotime($date)), $this->specialDays)) {
+                ++$this->numberOfSpecialDays;
+            }
+        }
     }
 }

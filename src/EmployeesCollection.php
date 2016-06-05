@@ -11,7 +11,7 @@ class EmployeesCollection
     /**
      * @var array
      */
-    protected $employeesFreeDaysPerWeek = [];
+    protected $freeDaysPerWeek = [];
 
     /**
      * @param Employee $employee

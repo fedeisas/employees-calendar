@@ -6,7 +6,7 @@ class Employee
     /**
      * @var string
      */
-    protected $id;
+    protected $generatedId;
 
     /**
      * @var string
