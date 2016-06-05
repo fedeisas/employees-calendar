@@ -21,7 +21,6 @@ class EmployeesCollectionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, $collection->count());
     }
 
-
     public function testGetFreeDaysForEmployee()
     {
         $collection = new EmployeesCollection($calendar);
