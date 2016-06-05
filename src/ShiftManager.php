@@ -34,7 +34,7 @@ class ShiftManager
         }
 
         $this->collection[$date][$shift->getName()][] = $employee;
-        $week = date('W', strtotime($date));
+        $week = $this->getYearWeek($date);
 
         $this->incrementCounter($this->workingDays, $employee, $week);
     }
@@ -50,7 +50,7 @@ class ShiftManager
             throw new \RuntimeException('Can\'t add an employee twice for the same shift.');
         }
 
-        $week = date('W', strtotime($date));
+        $week = $this->getYearWeek($date);
         $this->incrementCounter($this->specialDays, $employee, $week);
         $this->add($date, $shift, $employee);
     }
@@ -62,7 +62,7 @@ class ShiftManager
      */
     public function getNumberOfSpecialDaysThisWeek($date, Employee $employee)
     {
-        $week = date('W', strtotime($date));
+        $week = $this->getYearWeek($date);
         if (!empty($this->specialDays[$employee->getId()][$week])) {
             return $this->specialDays[$employee->getId()][$week];
         }
@@ -77,7 +77,7 @@ class ShiftManager
      */
     public function getNumberOfWorkingThisWeek($date, Employee $employee)
     {
-        $week = date('W', strtotime($date));
+        $week = $this->getYearWeek($date);
         if (!empty($this->workingDays[$employee->getId()][$week])) {
             return $this->workingDays[$employee->getId()][$week];
         }
@@ -129,5 +129,14 @@ class ShiftManager
         }
 
         return false;
+    }
+
+    /**
+     * @param string $date
+     * @return string
+     */
+    protected function getYearWeek($date)
+    {
+        return date('W', strtotime($date));
     }
 }
