@@ -3,6 +3,8 @@ namespace EmployeesCalendar;
 
 class Solver
 {
+    const MAXIMUM_WORKING_DAYS = 7;
+
     /**
      * @var Calendar
      */
@@ -98,7 +100,7 @@ class Solver
      */
     protected function hasReachedWeeklyWorkingDays($date, Employee $employee)
     {
-        return $this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->employeesCollection->getFreeDaysForEmployee($employee) >= 7;
+        return $this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->employeesCollection->getFreeDaysForEmployee($employee) >= static::MAXIMUM_WORKING_DAYS;
     }
 
     /**
