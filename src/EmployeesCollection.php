@@ -19,7 +19,7 @@ class EmployeesCollection
      */
     public function add(Employee $employee, $freeDaysPerWeek = 1)
     {
-        array_push($this->employees, $employee);
+        $this->employees[$employee->getId()] = $employee;
         $this->employeesFreeDaysPerWeek[$employee->getId()] = $freeDaysPerWeek;
     }
 
