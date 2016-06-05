@@ -18,16 +18,19 @@ class ShiftManager
      */
     protected $workingDays = [];
 
-    public function add($date, Shift $shift, Employee $employee, $specialDay = false)
+    public function add($date, Shift $shift, Employee $employee)
     {
         $this->collection[$date][(string) $shift][] = $employee;
         $week = date('W', strtotime($date));
 
-        if ($specialDay) {
-            $this->incrementCounter($this->specialDays, $employee, $week);
-        }
-
         $this->incrementCounter($this->workingDays, $employee, $week);
+    }
+
+    public function addSpecialDay($date, Shift $shift, Employee $employee)
+    {
+        $week = date('W', strtotime($date));
+        $this->incrementCounter($this->specialDays, $employee, $week);
+        $this->add($date, $shift, $employee);
     }
 
     public function getNumberOfSpecialDaysThisWeek($date, Employee $employee)

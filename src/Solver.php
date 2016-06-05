@@ -83,25 +83,39 @@ class Solver
             $shiftSize = $workableShift->getSize();
             $slotsOccupied = 0;
             $numberOfTries = 0;
+            $isSpecialDay = $this->calendar->isInSpecialDay($shift);
 
             while ($slotsOccupied < $shiftSize) {
                 $employee = $this->getNextEmployee();
 
                 ++$numberOfTries;
 
-                if ($employee->canWork($shift) &&
-                    $this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->getFreeDaysForEmployee($employee) <= 7 &&
-                    (
-                        !$this->calendar->isInSpecialDay($shift) || (
-                            $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee) < $specialDaysPerEmployee
-                        )
-                    )
-                ) {
+                if ($numberOfTries > $this->getEmployeesCount()) {
                     ++$slotsOccupied;
-                    $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
-                } elseif ($numberOfTries > $this->getEmployeesCount()) {
-                    ++$slotsOccupied;
-                    $this->manager->add($date, $shift, $employee, $this->calendar->isInSpecialDay($shift));
+                    if ($isInSpecialDay) {
+                        $this->manager->addSpecialDay($date, $shift, $employee);
+                    } elseif(!$isInSpecialDay) {
+                        $this->manager->add($date, $shift, $employee);
+                    }
+                }
+
+                if (!$employee->canWork($shift)) {
+                    continue;
+                }
+
+                if ($this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->getFreeDaysForEmployee($employee) >= 7) {
+                    continue;
+                }
+
+                if ($isInSpecialDay && $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee) > $specialDaysPerEmployee) {
+                    continue;
+                }
+
+                ++$slotsOccupied;
+                if ($isInSpecialDay) {
+                    $this->manager->addSpecialDay($date, $shift, $employee);
+                } elseif(!$isInSpecialDay) {
+                    $this->manager->add($date, $shift, $employee);
                 }
             }
         }

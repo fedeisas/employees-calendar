@@ -28,7 +28,7 @@ class ShiftManagerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $manager->getNumberOfSpecialDaysThisWeek('2016-06-06', $employee));
         $this->assertEquals(2, $manager->getNumberOfWorkingThisWeek('2016-06-06', $employee));
 
-        $manager->add('2016-06-07', Shift::createFromString('Saturday nighttime'), $employee, true);
+        $manager->addSpecialDay('2016-06-07', Shift::createFromString('Saturday nighttime'), $employee);
         $this->assertEquals(1, $manager->getNumberOfSpecialDaysThisWeek('2016-06-07', $employee));
         $this->assertEquals(3, $manager->getNumberOfWorkingThisWeek('2016-06-06', $employee));
     }
