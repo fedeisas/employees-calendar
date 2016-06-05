@@ -4,14 +4,14 @@ namespace EmployeesCalendar;
 class Solver
 {
     /**
-     * @var Employee[]
-     */
-    protected $employees = [];
-
-    /**
      * @var Calendar
      */
     protected $calendar;
+
+    /**
+     * @var EmployeesCollection
+     */
+    protected $employeesCollection;
 
     /**
      * @var Manager
@@ -21,51 +21,16 @@ class Solver
     /**
      * @var array
      */
-    protected $employeesFreeDaysPerWeek = [];
-
-    /**
-     * @var array
-     */
     protected $solution;
 
     /**
      * @param Calendar $calendar
      */
-    public function __construct(Calendar $calendar)
+    public function __construct(Calendar $calendar, EmployeesCollection $employeesCollection)
     {
         $this->calendar = $calendar;
+        $this->employeesCollection = $employeesCollection;
         $this->manager = new ShiftManager();
-    }
-
-    /**
-     * @param Employee $employee
-     * @param int $freeDaysPerWeek Free days per week. Default: 1
-     */
-    public function addEmployee(Employee $employee, $freeDaysPerWeek = 1)
-    {
-        array_push($this->employees, $employee);
-        $this->employeesFreeDaysPerWeek[$employee->getId()] = $freeDaysPerWeek;
-    }
-
-    /**
-     * @return Employee[]
-     */
-    public function getEmployees()
-    {
-        return $this->employees;
-    }
-
-    /**
-     * @return int
-     */
-    public function getEmployeesCount()
-    {
-        return count($this->employees);
-    }
-
-    public function getFreeDaysForEmployee(Employee $employee)
-    {
-        return $this->employeesFreeDaysPerWeek[$employee->getId()];
     }
 
     /**
@@ -73,11 +38,11 @@ class Solver
      */
     public function solve()
     {
+        $employeesCount = $this->employeesCollection->count();
         $numberOfSpecialDays = $this->calendar->getNumberOfSpecialDaysThisMonth();
-        $specialDaysPerEmployee = ceil($numberOfSpecialDays / $this->getEmployeesCount());
+        $specialDaysPerEmployee = ceil($numberOfSpecialDays / $employeesCount);
 
-        // [$date, Shift $shift, $size]
-        foreach ($this->calendar->getAllWorkableShifts() as $shiftComponent) {
+        foreach ($this->calendar->getAllWorkableShifts() as $workableShift) {
             $date = $workableShift->getDate();
             $shift = $workableShift->getShift();
             $shiftSize = $workableShift->getSize();
@@ -86,11 +51,11 @@ class Solver
             $isSpecialDay = $this->calendar->isInSpecialDay($shift);
 
             while ($slotsOccupied < $shiftSize) {
-                $employee = $this->getNextEmployee();
+                $employee = $this->employeesCollection->next();
 
                 ++$numberOfTries;
 
-                if ($numberOfTries > $this->getEmployeesCount()) {
+                if ($numberOfTries > $employeesCount) {
                     ++$slotsOccupied;
                     if ($isInSpecialDay) {
                         $this->manager->addSpecialDay($date, $shift, $employee);
@@ -103,11 +68,11 @@ class Solver
                     continue;
                 }
 
-                if ($this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->getFreeDaysForEmployee($employee) >= 7) {
+                if ($this->manager->getNumberOfWorkingThisWeek($date, $employee) + $this->employeesCollection->getFreeDaysForEmployee($employee) >= 7) {
                     continue;
                 }
 
-                if ($isInSpecialDay && $this->manager->getNumberOfSpecialDaysThisWeek($date, $employee) > $specialDaysPerEmployee) {
+                if ($isInSpecialDay && $this->manager->employeesCollection->getNumberOfSpecialDaysThisWeek($date, $employee) > $specialDaysPerEmployee) {
                     continue;
                 }
 
@@ -119,22 +84,6 @@ class Solver
                 }
             }
         }
-    }
-
-    /**
-     * @return Employee
-     */
-    public function getNextEmployee()
-    {
-        $employee = current($this->employees);
-        if (empty($employee)) {
-            reset($this->employees);
-            $employee = current($this->employees);
-        }
-
-        next($this->employees);
-
-        return $employee;
     }
 
     /**

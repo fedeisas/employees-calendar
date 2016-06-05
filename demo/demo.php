@@ -3,6 +3,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use EmployeesCalendar\Calendar;
 use EmployeesCalendar\Employee;
+use EmployeesCalendar\EmployeesCollection;
 use EmployeesCalendar\Shift;
 use EmployeesCalendar\Slot;
 use EmployeesCalendar\SlotsCollection;
@@ -28,23 +29,24 @@ $calendar = new Calendar(
     ]
 );
 
-$solver = new Solver($calendar);
+$employeesCollection = new EmployeesCollection();
 
-$solver->addEmployee(
+$employeesCollection->addEmployee(
     new Employee('Empleado 1')
 );
 
-$solver->addEmployee(
+$employeesCollection->addEmployee(
     new Employee('Empleado 2')
 );
 
-$solver->addEmployee(
+$employeesCollection->addEmployee(
     new Employee('Empleado 3', [
         Shift::createFromString('Tuesday daytime'),
         Shift::createFromString('Tuesday nighttime'),
     ])
 );
 
+$solver = new Solver($calendar, $employeesCollection);
 $solver->solve();
 
 foreach ($solver->getManager()->getCollection() as $date => $row) {

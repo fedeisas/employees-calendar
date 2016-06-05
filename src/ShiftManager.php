@@ -12,12 +12,21 @@ class ShiftManager
      * @var array
      */
 
+    /**
+     * @var array
+     */
     protected $specialDays = [];
+
     /**
      * @var array
      */
     protected $workingDays = [];
 
+    /**
+     * @param string $date
+     * @param Shift $shift
+     * @param Employee $employee
+     */
     public function add($date, Shift $shift, Employee $employee)
     {
         $this->collection[$date][(string) $shift][] = $employee;
@@ -26,6 +35,11 @@ class ShiftManager
         $this->incrementCounter($this->workingDays, $employee, $week);
     }
 
+    /**
+     * @param string $date
+     * @param Shift $shift
+     * @param Employee $employee
+     */
     public function addSpecialDay($date, Shift $shift, Employee $employee)
     {
         $week = date('W', strtotime($date));
@@ -33,24 +47,42 @@ class ShiftManager
         $this->add($date, $shift, $employee);
     }
 
+    /**
+     * @param string $date
+     * @param Employee $employee
+     * @return int
+     */
     public function getNumberOfSpecialDaysThisWeek($date, Employee $employee)
     {
-        if (!empty($this->specialDays[$employee->getId()][date('W', strtotime($date))])) {
-            return $this->specialDays[$employee->getId()][date('W', strtotime($date))];
+        $week = date('W', strtotime($date));
+        if (!empty($this->specialDays[$employee->getId()][$week])) {
+            return $this->specialDays[$employee->getId()][$week];
         }
 
         return 0;
     }
 
+    /**
+     * @param string $date
+     * @param Employee $employee
+     * @return int
+     */
     public function getNumberOfWorkingThisWeek($date, Employee $employee)
     {
-        if (!empty($this->workingDays[$employee->getId()][date('W', strtotime($date))])) {
-            return $this->workingDays[$employee->getId()][date('W', strtotime($date))];
+        $week = date('W', strtotime($date));
+        if (!empty($this->workingDays[$employee->getId()][$week])) {
+            return $this->workingDays[$employee->getId()][$week];
         }
 
         return 0;
     }
 
+    /**
+     * @param array &$array
+     * @param Employee $employee
+     * @param string $week
+     * @return void
+     */
     protected function incrementCounter(array &$array, Employee $employee, $week)
     {
         if (empty($array[$employee->getId()])) {
@@ -64,6 +96,9 @@ class ShiftManager
         ++$array[$employee->getId()][$week];
     }
 
+    /**
+     * @return array
+     */
     public function getCollection()
     {
         return $this->collection;
