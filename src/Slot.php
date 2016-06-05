@@ -15,7 +15,7 @@ class Slot
 
     public function __construct(Shift $shift, $size = 1)
     {
-        if (empty($size) || !is_numeric($size)) {
+        if (!is_numeric($size) || ($size !== 0 && empty($size))) {
             throw new \InvalidArgumentException('Slot size should be numeric');
         }
 
