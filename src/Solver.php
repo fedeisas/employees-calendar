@@ -94,7 +94,7 @@ class Solver
                     ++$slotsOccupied;
                     if ($isInSpecialDay) {
                         $this->manager->addSpecialDay($date, $shift, $employee);
-                    } elseif(!$isInSpecialDay) {
+                    } elseif (!$isInSpecialDay) {
                         $this->manager->add($date, $shift, $employee);
                     }
                 }
@@ -114,7 +114,7 @@ class Solver
                 ++$slotsOccupied;
                 if ($isInSpecialDay) {
                     $this->manager->addSpecialDay($date, $shift, $employee);
-                } elseif(!$isInSpecialDay) {
+                } elseif (!$isInSpecialDay) {
                     $this->manager->add($date, $shift, $employee);
                 }
             }
