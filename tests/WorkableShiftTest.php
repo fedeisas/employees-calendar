@@ -16,6 +16,15 @@ class WorkableShiftTest extends PHPUnit_Framework_TestCase
         new WorkableShift('foo', Shift::createFromString('Monday nighttime'), 1);
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid workable shift size: asd
+     */
+    public function testCreateBadSize()
+    {
+        new WorkableShift('2016-05-05', Shift::createFromString('Monday nighttime'), 'asd');
+    }
+
     public function testCreate()
     {
         $date = '2016-05-05';
