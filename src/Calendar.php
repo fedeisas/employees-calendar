@@ -46,7 +46,7 @@ class Calendar
     {
         $month = !empty($month) ? (int) $month : (int) date('m');
         $year = !empty($year) ? (int) $year : (int) date('Y');
-        $daysInMonth = (int) date('t', join('-', ['01', $month, $year]));
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
         if (empty($slotCollection)) {
             $slotCollection = new SlotsCollection(null, 1);
