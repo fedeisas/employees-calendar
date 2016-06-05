@@ -14,7 +14,7 @@ class Employee
     protected $name;
 
     /**
-     * @var array
+     * @var Shit[]
      */
     protected $constraints;
 
@@ -77,13 +77,5 @@ class Employee
         return count($constraints) === count(array_filter($constraints, function ($constraint) {
             return $constraint instanceof Shift;
         }));
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getName();
     }
 }
